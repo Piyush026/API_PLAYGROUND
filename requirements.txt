@@ -18,3 +18,5 @@ SQLAlchemy==2.0.21
 starlette==0.27.0
 typing_extensions==4.8.0
 uvicorn==0.23.2
+passlib~=1.7.4
+password_strength~=0.0.3.post2
