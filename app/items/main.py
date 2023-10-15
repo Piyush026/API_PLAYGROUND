@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from .routers import item, user  # Import routers from subdirectories
+from app.items import routes
 
 app = FastAPI()
 
 # Include routers for different parts of your application
-app.include_router(item.router, prefix="/items", tags=["items"])
+app.include_router(routes.router, prefix="/items", tags=["items"])
 # app.include_router(user.router, prefix="/users", tags=["users"])

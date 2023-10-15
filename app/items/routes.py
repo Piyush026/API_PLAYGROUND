@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-from .. import crud
-from ..database import get_db
-from ..schemas import ItemCreate, ItemResponse, ItemUpdate
+from app.items import crud
+from app.items.database import get_db
+from app.items.schemas import ItemCreate, ItemResponse, ItemUpdate
 
 import logging
 
