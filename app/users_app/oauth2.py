@@ -2,7 +2,7 @@ from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from app.users_app.token import verify_token
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/token/")
 
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
@@ -12,7 +12,6 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
         headers={"WWW-Authenticate": "Bearer"},
     )
     user = verify_token(token)
-    print(f"{user}------------------")
     if user is None:
         raise credentials_exception
     return user
