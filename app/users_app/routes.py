@@ -6,22 +6,14 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from starlette import status
 
-from app.users_app import crud, models, schemas, database, oauth2, token
+from app.users_app import crud, models, schemas, oauth2, token
 from app.users_app.oauth2 import get_current_user
 from app.users_app.schemas import TokenData, TokenResponse
+from database import get_db
 
 router = APIRouter()
 
-# Dependency to get the database session
-def get_db():
-    db = database.SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
-
-# Endpoint to create a user
 @router.post("/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.create_user(db, user)
@@ -57,7 +49,6 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
 
 
-# Endpoint to generate an access token
 @router.post("/token/", response_model=TokenResponse)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.username == form_data.username).first()
@@ -71,7 +62,5 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
 @router.get("/protected-data/")
 async def protected_data(current_user: schemas.User = Depends(get_current_user)):
     return {"message": "This data is protected and requires authorization."}
-
-
 
 # sqlalchemy.url = sqlite:///./test.db
