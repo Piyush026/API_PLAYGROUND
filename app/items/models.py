@@ -1,8 +1,8 @@
-# app/models.py
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 
-Base = declarative_base()
+from database import Base
+
 
 class Item(Base):
     __tablename__ = "items"
@@ -10,4 +10,5 @@ class Item(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True, unique=True)
     description = Column(String)
-    age = Column(Integer)
+    owner_id = Column(Integer, ForeignKey('users.id'))
+    owner = relationship('User', back_populates="items")
